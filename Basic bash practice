@@ -1,0 +1,66 @@
+#!/bin/bash
+
+#print username and date
+user=$(whoami)
+
+today=$(date +"%m-%d-%Y")
+echo "Today is  $today"
+
+current_time=$(date +"%H:%M:%S %p")
+echo "The current time is $current_time"
+
+#print more user system info
+function user_details {
+    echo "Hello! I am $user"
+    echo "Home Directory: $HOME"
+    echo "ID: $(id)"
+    echo "Bash shell version: $BASH_VERSION"
+    lslogins -u
+}
+
+#Call the user-details function
+user_details
+
+#Print OS type
+function os_type{
+    if type -t wevtutil &> /dev/null
+    then
+        OS=MSWin
+    elif type -t scutil &> /dev/null
+    then
+        OS=macOS
+    else
+        OS=Linux
+    fi
+    echo "My operating system is $OS"
+}
+
+#Call the os-type function
+os_type
+
+#Print shell scripts in current directory
+function list_scripts {
+    for SCRIPTNAME in $(ls | grep ".sh")
+    do
+        echo $SCRIPTNAME
+    done
+}
+
+#Call the list_scripts function
+list_scripts
+
+#Gather input for lab times; store in an associative array
+declare -A lab_time
+lab_time[total_hrs_spent]=$1
+lab_time[num_days_spent]=$2
+
+#Print the associative array
+function lab_log{
+    for key in "${!lab_time[@]}"
+    do
+        echo "$key: ${lab_time[$key]}"
+    done
+}
+
+#Call the lab_log function
+lab_log
